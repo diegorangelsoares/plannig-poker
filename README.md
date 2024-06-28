@@ -16,3 +16,8 @@ Projeto com intuido de gerir planning poker
 - Lombok
 - AWS SQS
 - Maven
+
+
+# DR
+
+![img.png](img.png)
