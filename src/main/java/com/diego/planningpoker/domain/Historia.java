@@ -35,7 +35,7 @@ public class Historia extends BaseEntity {
     private Planning planning;
 
     @ToString.Exclude
-    @OneToMany(cascade = {CascadeType.REFRESH}, mappedBy = "historia")
+    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER, mappedBy = "historia")
     public List<Voto> votos;
 
 }

@@ -1,11 +1,18 @@
 package com.diego.planningpoker.api.services;
 
 import com.diego.planningpoker.api.exception.RecursoNaoEncontradoException;
-import com.diego.planningpoker.api.requests.PlanningRequest;
+import com.diego.planningpoker.domain.Historia;
+import com.diego.planningpoker.presentation.assembler.HistoriaAssembler;
+import com.diego.planningpoker.presentation.assembler.PlanningAssembler;
+import com.diego.planningpoker.presentation.assembler.VotoAssembler;
+import com.diego.planningpoker.presentation.dto.http.request.PlanningRequest;
 import com.diego.planningpoker.domain.Planning;
 import com.diego.planningpoker.infrastructure.persistence.PlanningRepository;
 import com.diego.planningpoker.infrastructure.gson.GsonLocalDateSerializer;
 import com.diego.planningpoker.infrastructure.gson.GsonLocalDateTimeSerializer;
+import com.diego.planningpoker.presentation.dto.http.response.HistoriaResponse;
+import com.diego.planningpoker.presentation.dto.http.response.PlanningResponse;
+import com.diego.planningpoker.presentation.dto.http.response.VotoResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +25,9 @@ import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -88,6 +98,36 @@ public class PlanningServiceImpl implements PlanningService {
                 .registerTypeAdapter(LocalDateTime.class, GsonLocalDateTimeSerializer.INSTANCE)
                 .setPrettyPrinting()
                 .create();
+    }
+
+    public PlanningResponse convertToResponse(Planning entity) {
+        return PlanningAssembler.convertToResponse(entity);
+    }
+
+    public Page<PlanningResponse> convertToPageResponse(Page<Planning> entitys) {
+        return toPageObjectDto(entitys);
+    }
+
+    public Page<PlanningResponse> toPageObjectDto(Page<Planning> objects) {
+        Page<PlanningResponse> dtos  = objects.map(this::convertToObjectDto);
+        return dtos;
+    }
+
+    public PlanningResponse convertToObjectDto(Planning planning) {
+
+        List<HistoriaResponse> historias = Optional
+                .ofNullable(planning.getHistorias())
+                .orElse(new ArrayList<>())
+                .stream()
+                .map(HistoriaAssembler::convertToResponse)
+                .toList();
+
+        return PlanningResponse.builder()
+                .observacao(planning.getObservacao())
+                .titulo(planning.getTitulo())
+                .status(planning.getStatus())
+                .historias(historias)
+                .build();
     }
 
 

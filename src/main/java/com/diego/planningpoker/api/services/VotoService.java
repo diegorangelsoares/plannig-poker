@@ -1,8 +1,6 @@
 package com.diego.planningpoker.api.services;
 
-import com.diego.planningpoker.api.requests.HistoriaRequest;
-import com.diego.planningpoker.api.requests.VotoRequest;
-import com.diego.planningpoker.domain.Historia;
+import com.diego.planningpoker.presentation.dto.http.request.VotoRequest;
 import com.diego.planningpoker.domain.Voto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

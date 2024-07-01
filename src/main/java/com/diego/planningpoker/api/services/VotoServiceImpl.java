@@ -1,18 +1,16 @@
 package com.diego.planningpoker.api.services;
 
 import com.diego.planningpoker.api.exception.RecursoNaoEncontradoException;
-import com.diego.planningpoker.api.requests.VotoRequest;
+import com.diego.planningpoker.presentation.dto.http.request.VotoRequest;
 import com.diego.planningpoker.domain.Historia;
 import com.diego.planningpoker.domain.Voto;
 import com.diego.planningpoker.infrastructure.persistence.HistoriaRepository;
-import com.diego.planningpoker.infrastructure.persistence.PlanningRepository;
 import com.diego.planningpoker.infrastructure.persistence.VotoRepository;
 import com.diego.planningpoker.infrastructure.gson.GsonLocalDateSerializer;
 import com.diego.planningpoker.infrastructure.gson.GsonLocalDateTimeSerializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

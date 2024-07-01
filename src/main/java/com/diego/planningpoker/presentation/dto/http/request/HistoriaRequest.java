@@ -1,11 +1,8 @@
-package com.diego.planningpoker.api.requests;
+package com.diego.planningpoker.presentation.dto.http.request;
 
-import com.diego.planningpoker.domain.Planning;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.ToString;
 
 import javax.validation.constraints.Size;
 import java.io.Serial;

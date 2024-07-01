@@ -1,13 +1,17 @@
 package com.diego.planningpoker.api.services;
 
 import com.diego.planningpoker.api.exception.RecursoNaoEncontradoException;
-import com.diego.planningpoker.api.requests.HistoriaRequest;
+import com.diego.planningpoker.presentation.assembler.VotoAssembler;
+import com.diego.planningpoker.presentation.dto.http.request.HistoriaRequest;
 import com.diego.planningpoker.domain.Historia;
 import com.diego.planningpoker.domain.Planning;
 import com.diego.planningpoker.infrastructure.persistence.HistoriaRepository;
 import com.diego.planningpoker.infrastructure.persistence.PlanningRepository;
 import com.diego.planningpoker.infrastructure.gson.GsonLocalDateSerializer;
 import com.diego.planningpoker.infrastructure.gson.GsonLocalDateTimeSerializer;
+import com.diego.planningpoker.presentation.dto.http.response.HistoriaResponse;
+import com.diego.planningpoker.presentation.dto.http.response.PlanningResponse;
+import com.diego.planningpoker.presentation.dto.http.response.VotoResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +24,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -98,6 +105,32 @@ public class HistoriaServiceImpl implements HistoriaService {
                 .registerTypeAdapter(LocalDateTime.class, GsonLocalDateTimeSerializer.INSTANCE)
                 .setPrettyPrinting()
                 .create();
+    }
+
+    public Page<HistoriaResponse> convertToPageResponse(Page<Historia> entitys) {
+        return toPageObjectDto(entitys);
+    }
+
+    public Page<HistoriaResponse> toPageObjectDto(Page<Historia> objects) {
+        Page<HistoriaResponse> dtos  = objects.map(this::convertToObjectDto);
+        return dtos;
+    }
+
+    public HistoriaResponse convertToObjectDto(Historia historia) {
+
+        List<VotoResponse> votos = Optional
+                .ofNullable(historia.getVotos())
+                .orElse(new ArrayList<>())
+                .stream()
+                .map(VotoAssembler::convertToResponse)
+                .toList();
+
+        return HistoriaResponse.builder()
+                .status(historia.getStatus())
+                .id(historia.getId())
+                .card(historia.getCard())
+                .votos(votos)
+                .build();
     }
 
 

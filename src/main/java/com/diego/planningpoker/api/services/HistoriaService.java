@@ -1,9 +1,15 @@
 package com.diego.planningpoker.api.services;
 
-import com.diego.planningpoker.api.requests.HistoriaRequest;
+import com.diego.planningpoker.presentation.assembler.VotoAssembler;
+import com.diego.planningpoker.presentation.dto.http.request.HistoriaRequest;
 import com.diego.planningpoker.domain.Historia;
+import com.diego.planningpoker.presentation.dto.http.response.HistoriaResponse;
+import com.diego.planningpoker.presentation.dto.http.response.VotoResponse;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 public interface HistoriaService {
@@ -20,5 +26,10 @@ public interface HistoriaService {
 
     Historia alterar(long id, Historia planning);
 
+    Page<HistoriaResponse> convertToPageResponse(Page<Historia> entitys);
+
+    Page<HistoriaResponse> toPageObjectDto(Page<Historia> objects);
+
+    HistoriaResponse convertToObjectDto(Historia historia);
 
 }

@@ -1,14 +1,16 @@
 package com.diego.planningpoker.api.controllers;
 
-import com.diego.planningpoker.api.requests.VotoRequest;
+import com.diego.planningpoker.presentation.dto.http.request.VotoRequest;
 import com.diego.planningpoker.api.services.VotoService;
+import com.diego.planningpoker.domain.Voto;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -19,12 +21,12 @@ public class VotacaoController {
     VotoService votoService;
 
     @GetMapping(value = "/historia/{id}/fechados")
-    public ResponseEntity<?> findVotosByHistoriaFechados(@PathVariable("id") Long id) {
+    public ResponseEntity<List<String>> findVotosByHistoriaFechados(@PathVariable("id") Long id) {
         return new ResponseEntity<>(votoService.votaram(id), HttpStatus.OK);
     }
 
     @GetMapping(value = "/historia/{id}/final")
-    public ResponseEntity<?> findVotosByHistoriaAbertos(@PathVariable("id") Long id) {
+    public ResponseEntity<List<Voto>> findVotosByHistoriaAbertos(@PathVariable("id") Long id) {
         return new ResponseEntity<>(votoService.buscarPorIdHistoria(id), HttpStatus.OK);
     }
 
