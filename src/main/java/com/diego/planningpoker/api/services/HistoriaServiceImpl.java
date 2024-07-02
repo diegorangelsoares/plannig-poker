@@ -128,6 +128,7 @@ public class HistoriaServiceImpl implements HistoriaService {
         return HistoriaResponse.builder()
                 .status(historia.getStatus())
                 .id(historia.getId())
+                .descricao(historia.getDescricao())
                 .card(historia.getCard())
                 .votos(votos)
                 .build();
