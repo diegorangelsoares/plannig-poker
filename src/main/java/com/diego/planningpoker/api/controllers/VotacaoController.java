@@ -1,8 +1,10 @@
 package com.diego.planningpoker.api.controllers;
 
+import com.diego.planningpoker.presentation.assembler.VotoAssembler;
 import com.diego.planningpoker.presentation.dto.http.request.VotoRequest;
 import com.diego.planningpoker.api.services.VotoService;
 import com.diego.planningpoker.domain.Voto;
+import com.diego.planningpoker.presentation.dto.http.response.VotoResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ public class VotacaoController {
     }
 
     @GetMapping(value = "/historia/{id}/final")
-    public ResponseEntity<List<Voto>> findVotosByHistoriaAbertos(@PathVariable("id") Long id) {
+    public ResponseEntity<List<VotoResponse>> findVotosByHistoriaAbertos(@PathVariable("id") Long id) {
         return new ResponseEntity<>(votoService.buscarPorIdHistoria(id), HttpStatus.OK);
     }
 

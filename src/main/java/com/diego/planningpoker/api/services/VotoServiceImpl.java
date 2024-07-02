@@ -1,6 +1,7 @@
 package com.diego.planningpoker.api.services;
 
 import com.diego.planningpoker.api.exception.RecursoNaoEncontradoException;
+import com.diego.planningpoker.presentation.assembler.VotoAssembler;
 import com.diego.planningpoker.presentation.dto.http.request.VotoRequest;
 import com.diego.planningpoker.domain.Historia;
 import com.diego.planningpoker.domain.Voto;
@@ -8,6 +9,8 @@ import com.diego.planningpoker.infrastructure.persistence.HistoriaRepository;
 import com.diego.planningpoker.infrastructure.persistence.VotoRepository;
 import com.diego.planningpoker.infrastructure.gson.GsonLocalDateSerializer;
 import com.diego.planningpoker.infrastructure.gson.GsonLocalDateTimeSerializer;
+import com.diego.planningpoker.presentation.dto.http.response.HistoriaResponse;
+import com.diego.planningpoker.presentation.dto.http.response.VotoResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -54,14 +58,22 @@ public class VotoServiceImpl implements VotoService {
     }
 
     @Override
-    public List<Voto> buscarPorIdHistoria(Long id){
+    public List<VotoResponse> buscarPorIdHistoria(Long id){
         Historia historia = historiaRepository.findById(id).orElseThrow((() -> new RecursoNaoEncontradoException("Historia com id "+id+" não encontrado para remoção.")));
-        return votoRepository.findVotoByHistoria(historia);
+        List<VotoResponse> votoResponses = new ArrayList<>();
+        votoRepository.findVotoByHistoria(historia).forEach(
+                voto -> votoResponses.add(VotoResponse
+                        .builder()
+                        .votante(voto.getVotante())
+                        .orcamento(voto.getOrcamento())
+                .build()));
+
+        return votoResponses;
     }
 
     @Override
     public List<String> votaram (long idHistoria){
-        List<Voto> votos = buscarPorIdHistoria(idHistoria);
+        List<VotoResponse> votos = buscarPorIdHistoria(idHistoria);
         if (votos == null || votos.isEmpty()){
             return new ArrayList<>();
         }
@@ -89,6 +101,25 @@ public class VotoServiceImpl implements VotoService {
                 .setPrettyPrinting()
                 .create();
     }
+
+    public Page<VotoResponse> convertToPageResponse(Page<Voto> entitys) {
+        return toPageObjectDto(entitys);
+    }
+
+    public Page<VotoResponse> toPageObjectDto(Page<Voto> objects) {
+        Page<VotoResponse> dtos  = objects.map(this::convertToObjectDto);
+        return dtos;
+    }
+
+    public VotoResponse convertToObjectDto(Voto voto) {
+
+        return VotoResponse.builder()
+                .votante(voto.getVotante())
+                .orcamento(voto.getOrcamento())
+                .build();
+    }
+
+
 
 
 
