@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/api/v1/planning")
 public class PlanningController {
 
