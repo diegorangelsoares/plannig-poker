@@ -20,6 +20,7 @@ public class HistoriaAssembler {
         return Historia.builder()
                 .card(request.getCard())
                 .descricao(request.getDescricao())
+                .orcamento(request.getOrcamento())
             .build();
     }
 
@@ -36,6 +37,7 @@ public class HistoriaAssembler {
             .id(entity.getId())
             .status(entity.getStatus())
             .descricao(entity.getDescricao())
+            .orcamento(entity.getOrcamento())
             .card(entity.getCard())
             .votos(votos)
             .build();

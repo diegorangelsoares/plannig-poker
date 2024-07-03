@@ -28,6 +28,9 @@ public class Historia extends BaseEntity {
     @Column(name = "ds_status")
     public String status;
 
+    @Column(name = "nu_orcamento")
+    public Integer orcamento;
+
     @ManyToOne(cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "FK_ID_PLANNING",
             foreignKey = @ForeignKey(name = "FK_HISTORIA_ID_PLANNING"))

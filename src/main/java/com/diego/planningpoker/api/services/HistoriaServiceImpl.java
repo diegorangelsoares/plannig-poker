@@ -48,6 +48,7 @@ public class HistoriaServiceImpl implements HistoriaService {
         historia.setCard(historiaRequest.getCard());
         historia.setDescricao(historiaRequest.getDescricao());
         historia.setPlanning(planning);
+        historia.setOrcamento(historiaRequest.getOrcamento());
         historia.setStatus("INICIADA");
         return historiaRepository.save(historia);
     }
@@ -75,8 +76,8 @@ public class HistoriaServiceImpl implements HistoriaService {
 
     @Override
     public void deletePorId(long id) {
-        Historia planning = historiaRepository.findById(id).orElseThrow((() -> new RecursoNaoEncontradoException("Historia com id "+id+" não encontrado para remoção.")));
-        historiaRepository.delete(planning);
+        Historia historia = historiaRepository.findById(id).orElseThrow((() -> new RecursoNaoEncontradoException("Historia com id "+id+" não encontrado para remoção.")));
+        historiaRepository.delete(historia);
     }
 
     @Override
@@ -84,6 +85,7 @@ public class HistoriaServiceImpl implements HistoriaService {
         Historia historia = historiaRepository.findById(id).orElseThrow((() -> new RecursoNaoEncontradoException("Historia com id "+id+" não encontrado para remoção.")));
         if (historiaRequest.getCard() != null) historia.setCard(historiaRequest.getCard());
         if (historiaRequest.getDescricao() != null) historia.setDescricao(historiaRequest.getDescricao());
+        if (historiaRequest.getOrcamento() != null) historia.setOrcamento(historiaRequest.getOrcamento());
         if (historiaRequest.getIdPlanning() != null) {
             Planning planning = planningRepository.findById(historiaRequest.getIdPlanning()).orElseThrow((() -> new RecursoNaoEncontradoException("Planning com id "+historiaRequest.getIdPlanning()+" não encontrada.")));
             historia.setPlanning(planning);
@@ -130,6 +132,7 @@ public class HistoriaServiceImpl implements HistoriaService {
                 .id(historia.getId())
                 .descricao(historia.getDescricao())
                 .card(historia.getCard())
+                .orcamento(historia.getOrcamento())
                 .votos(votos)
                 .build();
     }

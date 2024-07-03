@@ -25,6 +25,9 @@ public class HistoriaRequest implements Serializable {
     @Schema(example = "1", description = "Identificacao da Planning")
     public Integer idPlanning;
 
+    @Schema(example = "0", description = "Valor do orcamento final da historia")
+    public Integer orcamento;
+
 
 
 }

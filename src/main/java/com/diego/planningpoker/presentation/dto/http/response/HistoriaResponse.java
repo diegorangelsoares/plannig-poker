@@ -18,6 +18,7 @@ public class HistoriaResponse {
     public String descricao;
     public String card;
     public String status;
+    public Integer orcamento;
     public List<VotoResponse> votos;
 
 }
