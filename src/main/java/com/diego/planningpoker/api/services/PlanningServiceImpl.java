@@ -125,6 +125,7 @@ public class PlanningServiceImpl implements PlanningService {
         return PlanningResponse.builder()
                 .observacao(planning.getObservacao())
                 .titulo(planning.getTitulo())
+                .equipe(planning.getEquipe())
                 .status(planning.getStatus())
                 .historias(historias)
                 .build();
