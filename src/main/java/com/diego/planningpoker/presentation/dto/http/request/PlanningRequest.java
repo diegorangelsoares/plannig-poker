@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 public class PlanningRequest implements Serializable {
@@ -24,6 +25,9 @@ public class PlanningRequest implements Serializable {
 
     @Schema(example = "HPay", description = "Equipe que está realizando o planning")
     public String equipe;
+
+    @Schema(description = "Equipe que está realizando o planning")
+    public List<HistoriaRequest> historias;
 
 
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 public class HistoriaRequest implements Serializable {
@@ -27,6 +28,9 @@ public class HistoriaRequest implements Serializable {
 
     @Schema(example = "0", description = "Valor do orcamento final da historia")
     public Integer orcamento;
+
+    @Schema(description = "Votos")
+    public List<VotoRequest> votos;
 
 
 

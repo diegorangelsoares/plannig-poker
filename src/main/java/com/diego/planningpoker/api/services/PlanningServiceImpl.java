@@ -2,6 +2,7 @@ package com.diego.planningpoker.api.services;
 
 import com.diego.planningpoker.api.exception.RecursoNaoEncontradoException;
 import com.diego.planningpoker.domain.Historia;
+import com.diego.planningpoker.infrastructure.persistence.HistoriaRepository;
 import com.diego.planningpoker.presentation.assembler.HistoriaAssembler;
 import com.diego.planningpoker.presentation.assembler.PlanningAssembler;
 import com.diego.planningpoker.presentation.assembler.VotoAssembler;
@@ -35,8 +36,11 @@ public class PlanningServiceImpl implements PlanningService {
 
     private final PlanningRepository planningRepository;
 
-    public PlanningServiceImpl(PlanningRepository planningRepository) {
+    private final HistoriaRepository historiaRepository;
+
+    public PlanningServiceImpl(PlanningRepository planningRepository, HistoriaRepository historiaRepository) {
         this.planningRepository = planningRepository;
+        this.historiaRepository = historiaRepository;
     }
 
     @Override
@@ -46,7 +50,22 @@ public class PlanningServiceImpl implements PlanningService {
         planning.setObservacao(planningRequest.getObservacao());
         planning.setEquipe(planningRequest.getEquipe());
         planning.setStatus("PENDENTE");
-        return planningRepository.save(planning);
+        planningRepository.save(planning);
+
+        if (planning.getHistorias() != null || !planning.getHistorias().isEmpty()){
+            planning.getHistorias().forEach(
+                    historia -> {
+                        historiaRepository.save(Historia.builder()
+                                        .planning(planning)
+                                        .orcamento(historia.getOrcamento())
+                                        .card(historia.getCard())
+                                        .descricao(historia.getDescricao())
+                                        .status("PENDENTE")
+                                .build());
+                    }
+            );
+        }
+        return planning;
     }
 
     @Override
