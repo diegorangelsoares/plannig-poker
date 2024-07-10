@@ -52,8 +52,10 @@ public class PlanningServiceImpl implements PlanningService {
         planning.setStatus("PENDENTE");
         planningRepository.save(planning);
 
-        if (planning.getHistorias() != null || !planning.getHistorias().isEmpty()){
-            planning.getHistorias().forEach(
+        List<Historia> historias = new ArrayList<>();
+
+        if (planningRequest.getHistorias() != null && !planningRequest.getHistorias().isEmpty()){
+            planningRequest.getHistorias().forEach(
                     historia -> {
                         historiaRepository.save(Historia.builder()
                                         .planning(planning)
@@ -62,8 +64,18 @@ public class PlanningServiceImpl implements PlanningService {
                                         .descricao(historia.getDescricao())
                                         .status("PENDENTE")
                                 .build());
+                        historias.add(Historia.builder()
+                                        .status("PENDENTE")
+                                        .card(historia.getCard())
+                                        .orcamento(historia.getOrcamento())
+                                        .descricao(historia.getDescricao())
+                                        .planning(planning)
+                                .build());
                     }
             );
+        }
+        if (historias != null && !historias.isEmpty()){
+            planning.setHistorias(historias);
         }
         return planning;
     }
